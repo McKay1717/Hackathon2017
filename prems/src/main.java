@@ -72,38 +72,33 @@ class Checker {
             }
         }
 
-        if(string.length()<=2){
+        int nbDigit=string.length();
+
+        if(nbDigit<2){
             return true;
         }
 
-        /*
-        check 2 digit
-        */
-
-        for (int i=0; i<string.length()-1; i++){
-            int combi = 0;
-            combi+=getIntInString(string, i)*10;
-            combi+=getIntInString(string, i+1);
-            if(!isPrime(combi)){
+        for(int d=2; d<nbDigit; d++){
+            if(!suiteDigits(d, string)){
                 return false;
             }
         }
 
+        return true;
+    }
 
-        /*
-        check 3 digit
-        */
-        for (int i=0; i<string.length()-2; i++){
-            int combi = 0;
-            combi+=getIntInString(string, i)*100;
-            combi+=getIntInString(string, i+1)*10;
-            combi+=getIntInString(string, i+2);
-            if(!isPrime(combi)){
+    static boolean suiteDigits(int d, String nombe){
+        for (int i=0; i<nombe.length()-(d-1); i++){
+            int value=0;
+            int count=i;
+            for (int p = (int) Math.pow(10.0, d-1); p>0; p=p/10){
+                value+=getIntInString(nombe, count)*p;
+                count++;
+            }
+            if(!isPrime(value)){
                 return false;
             }
         }
-
-
         return true;
     }
 
@@ -135,6 +130,8 @@ class SuperNonPremier {
     public static void main(String[] args) {
         Locale.setDefault(Locale.ENGLISH);
 
+
+
         Checker c = new Checker(100000); // check for number till 100000
         //System.out.println(c);
         Scanner scan = new Scanner(System.in);
@@ -144,5 +141,6 @@ class SuperNonPremier {
             int value = scan.nextInt(); // get the value from stdin
             System.out.println(c.check(value)); // print answer on stdout
         }
+
     }
 }
